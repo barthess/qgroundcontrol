@@ -51,12 +51,46 @@ UASControlWidget::UASControlWidget(QWidget *parent) : QWidget(parent),
 
     connect(UASManager::instance(), SIGNAL(activeUASSet(UASInterface*)), this, SLOT(setUAS(UASInterface*)));
     ui.modeComboBox->clear();
-    ui.modeComboBox->insertItem(0, UAS::getShortModeTextFor(MAV_MODE_PREFLIGHT), MAV_MODE_PREFLIGHT);
-    ui.modeComboBox->insertItem(1, UAS::getShortModeTextFor((MAV_MODE_FLAG_STABILIZE_ENABLED | MAV_MODE_FLAG_MANUAL_INPUT_ENABLED)), (MAV_MODE_FLAG_STABILIZE_ENABLED | MAV_MODE_FLAG_MANUAL_INPUT_ENABLED));
-    ui.modeComboBox->insertItem(2, UAS::getShortModeTextFor(MAV_MODE_FLAG_MANUAL_INPUT_ENABLED), MAV_MODE_FLAG_MANUAL_INPUT_ENABLED);
-    ui.modeComboBox->insertItem(3, UAS::getShortModeTextFor((MAV_MODE_FLAG_STABILIZE_ENABLED | MAV_MODE_FLAG_MANUAL_INPUT_ENABLED | MAV_MODE_FLAG_GUIDED_ENABLED)), (MAV_MODE_FLAG_STABILIZE_ENABLED | MAV_MODE_FLAG_MANUAL_INPUT_ENABLED | MAV_MODE_FLAG_GUIDED_ENABLED));
-    ui.modeComboBox->insertItem(4, UAS::getShortModeTextFor((MAV_MODE_FLAG_STABILIZE_ENABLED | MAV_MODE_FLAG_MANUAL_INPUT_ENABLED | MAV_MODE_FLAG_GUIDED_ENABLED | MAV_MODE_FLAG_AUTO_ENABLED)), (MAV_MODE_FLAG_STABILIZE_ENABLED | MAV_MODE_FLAG_MANUAL_INPUT_ENABLED | MAV_MODE_FLAG_GUIDED_ENABLED | MAV_MODE_FLAG_AUTO_ENABLED));
-    ui.modeComboBox->insertItem(5, UAS::getShortModeTextFor((MAV_MODE_FLAG_MANUAL_INPUT_ENABLED | MAV_MODE_FLAG_TEST_ENABLED)), (MAV_MODE_FLAG_MANUAL_INPUT_ENABLED | MAV_MODE_FLAG_TEST_ENABLED));
+
+    int mode = 0;
+    int n = 0;
+
+    mode = MAV_MODE_PREFLIGHT;
+    ui.modeComboBox->insertItem(n,   UAS::getShortModeTextFor(mode), mode);
+    mode |= MAV_MODE_FLAG_SAFETY_ARMED;
+    ui.modeComboBox->insertItem(n+6, UAS::getShortModeTextFor(mode), mode);
+    n++;
+
+    mode = MAV_MODE_FLAG_STABILIZE_ENABLED | MAV_MODE_FLAG_MANUAL_INPUT_ENABLED;
+    ui.modeComboBox->insertItem(n, UAS::getShortModeTextFor(mode), mode);
+    mode |= MAV_MODE_FLAG_SAFETY_ARMED;
+    ui.modeComboBox->insertItem(n+6, UAS::getShortModeTextFor(mode), mode);
+    n++;
+
+    mode = MAV_MODE_FLAG_MANUAL_INPUT_ENABLED;
+    ui.modeComboBox->insertItem(n, UAS::getShortModeTextFor(mode), mode);
+    mode |= MAV_MODE_FLAG_SAFETY_ARMED;
+    ui.modeComboBox->insertItem(n+6, UAS::getShortModeTextFor(mode), mode);
+    n++;
+
+    mode = MAV_MODE_FLAG_STABILIZE_ENABLED | MAV_MODE_FLAG_MANUAL_INPUT_ENABLED | MAV_MODE_FLAG_GUIDED_ENABLED;
+    ui.modeComboBox->insertItem(n, UAS::getShortModeTextFor(mode), mode);
+    mode |= MAV_MODE_FLAG_SAFETY_ARMED;
+    ui.modeComboBox->insertItem(n+6, UAS::getShortModeTextFor(mode), mode);
+    n++;
+
+    mode = MAV_MODE_FLAG_STABILIZE_ENABLED | MAV_MODE_FLAG_MANUAL_INPUT_ENABLED | MAV_MODE_FLAG_GUIDED_ENABLED | MAV_MODE_FLAG_AUTO_ENABLED;
+    ui.modeComboBox->insertItem(n, UAS::getShortModeTextFor(mode), mode);
+    mode |= MAV_MODE_FLAG_SAFETY_ARMED;
+    ui.modeComboBox->insertItem(n+6, UAS::getShortModeTextFor(mode), mode);
+    n++;
+
+    mode = MAV_MODE_FLAG_MANUAL_INPUT_ENABLED | MAV_MODE_FLAG_TEST_ENABLED;
+    ui.modeComboBox->insertItem(n, UAS::getShortModeTextFor(mode), mode);
+    mode |= MAV_MODE_FLAG_SAFETY_ARMED;
+    ui.modeComboBox->insertItem(n+6, UAS::getShortModeTextFor(mode), mode);
+    n++;
+
     connect(ui.modeComboBox, SIGNAL(activated(int)), this, SLOT(setMode(int)));
     connect(ui.setModeButton, SIGNAL(clicked()), this, SLOT(transmitMode()));
 
